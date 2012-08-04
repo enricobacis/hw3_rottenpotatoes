@@ -1,9 +1,5 @@
-# Add a declarative step here for populating the DB with movies.
-
 Given /the following movies exist/ do |movies_table|
   movies_table.hashes.each do |movie|
-    # each returned element will be a hash whose key is the table header.
-    # you should arrange to add that movie to the database here.
     Movie.create!(movie)
   end
 end
@@ -12,9 +8,9 @@ end
 #   on the same page
 
 Then /I should see "(.*)" before "(.*)"/ do |e1, e2|
-  #  ensure that that e1 occurs before e2.
-  #  page.content  is the entire content of the page as a string.
-  flunk "Unimplemented"
+  p1 = /#{e1}/ =~ page.body ; flunk %Q{"#{e1}" not found} if p1.nil?
+  p2 = /#{e2}/ =~ page.body ; flunk %Q{"#{e2}" not found} if p2.nil?
+  flunk %Q{"#{e1}" appears after "#{e2}"} if p1 > p2
 end
 
 # Make it easier to express checking or unchecking several boxes at once
